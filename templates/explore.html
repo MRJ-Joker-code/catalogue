@@ -1,0 +1,495 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Product</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+     nav.top {
+      background-color: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    nav.top a {
+      margin-right: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .left, .right {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    form label {
+      display: block;
+      margin: 1rem 0 0.4rem;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px ;
+    }
+
+    textarea {
+      height: 80px;
+      resize: vertical;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #f1f1f1;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .preview-area {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .image-preview {
+      background: #eee;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .image-preview img {
+      width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .thumbnails {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .thumbnail-preview {
+      width: 80px;
+      height: 80px;
+      background: #eee;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .thumbnail-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    button {
+      margin-top: 2rem;
+      background: #6a33ff;
+      color: white;
+      border: none;
+      padding: 0.7rem 2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #572ccc;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+    }
+
+  </style>
+ <style>
+  .tag-section {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .form-section {
+    margin-bottom: 20px;
+  }
+   nav.top {
+      background-color: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav.top a {
+      margin-right: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 500;
+    }
+.category-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+  font-size: 16px;
+}
+
+.category-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fafafa;
+  font-size: 15px;
+  color: #333;
+  transition: border-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.category-select:focus {
+  border-color: #ff5722;
+  outline: none;
+  background-color: #fff;
+}
+.site-footer {
+  background-color: #f0f0f0;
+  padding: 40px 20px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.footer-logo-grid img {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-grid img:hover {
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 150px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  text-align-last: center;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.brand-link img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+</style>
+</style>
+
+</head>
+<body>
+<nav class="top">
+    <a href="/market-place">Home</a>
+    <a href="/fashion/">Fashion</a>
+    <a href="/category/electronics/">Electronics</a>
+    <a href="/category/furniture/">Furniture</a>
+    <a href="/category/beauty/">Beauty</a>
+    <a href="/category/books/">Books</a>
+    <a href="/category/automotive/">Automotive</a>
+    <a href="/category/sports/">Sports & Outdoors</a>
+  </nav>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+
+      <!-- LEFT SECTION -->
+      <div class="left">
+        <label>Main Image</label>
+        <div class="image-preview" id="main-preview">Main Image</div>
+        <input type="file" name="image" id="main-image" required>
+
+        <label>Additional Images</label>
+        <div class="thumbnails">
+          <div class="thumbnail-preview" id="thumb2-preview">img1</div>
+          <div class="thumbnail-preview" id="thumb3-preview">img2</div>
+          <div class="thumbnail-preview" id="thumb4-preview">img3</div>
+        </div>
+
+        <input type="file" name="image2" id="img2">
+        <input type="file" name="image3" id="img3">
+        <input type="file" name="image4" id="img4">
+      </div>
+
+      <!-- RIGHT SECTION -->
+      <div class="right">
+        <label>Product Title</label>
+        <input type="text" name="name" placeholder="Enter product name" required>
+
+        <label>Description</label>
+        <textarea name="description" placeholder="Enter product description..." required></textarea>
+
+        <label>Seller</label>
+        <input type="text" name="company_name" placeholder="Enter seller's name">
+
+        <label for="link">Product Link:</label>
+        <input type="url" name="link" placeholder="https://example.com/product" style="width: 100%; padding: 6px; margin-bottom: 10px;">
+
+
+        <label>Price</label>
+        <input type="number" name="price" step="0.01" required>
+
+        <label>Discount Price</label>
+        <input type="number" name="discount_price" placeholder="(Optional)" step="0.01">
+
+        <label>Colors</label>
+        <div class="checkbox-group">
+          {% for color in colors %}
+            <label>
+              <input type="checkbox" name="colors" value="{{ color.id }}" onchange="updateList('color')"> {{ color.name }}
+            </label>
+          {% endfor %}
+        </div>
+        <div class="preview-area" id="color-list">Selected: none</div>
+
+        <label>Sizes</label>
+        <div class="checkbox-group">
+          {% for size in sizes %}
+            <label>
+              <input type="checkbox" name="sizes" value="{{ size.id }}" onchange="updateList('size')"> {{ size.label }}
+            </label>
+          {% endfor %}
+        </div>
+        <div class="preview-area" id="size-list">Selected: none</div>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" value="1" min="1">
+
+ <label for="category" class="category-label">Select Category</label>
+<select name="category" id="category-select" class="category-select" required>
+  <option value="">-- Choose a category --</option>
+  {% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+  {% endfor %}
+</select>
+<div class="form-section">
+  <label for="tags">Select Tags</label>
+  <div id="tag-options">
+    <p style="color: #aaa;">Select a category to load tags.</p>
+  </div>
+</div>
+
+
+
+<!-- Submit Button (separate section) -->
+<div class="form-section">
+  <button type="submit">Submit Product</button>
+</div>
+    </div>
+
+
+  <script>
+    // Show selected colors and sizes
+    function updateList(type) {
+      const checkboxes = document.querySelectorAll(`input[name="${type}s"]:checked`);
+      const names = Array.from(checkboxes).map(cb => cb.parentElement.textContent.trim());
+      document.getElementById(`${type}-list`).innerText = names.length ? `Selected: ${names.join(', ')}` : 'Selected: none';
+    }
+
+    // Preview image into container
+    function previewImage(inputId, previewId) {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+
+      input.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    previewImage("main-image", "main-preview");
+    previewImage("img2", "thumb2-preview");
+    previewImage("img3", "thumb3-preview");
+    previewImage("img4", "thumb4-preview");
+  </script>
+<script>
+  function toggleTags() {
+    const section = document.getElementById('tagSection');
+    section.style.display = section.style.display === 'none' ? 'block' : 'none';
+  }
+</script>
+  <script>
+        const searchInput = document.getElementById('tagSearch');
+        const tagList = document.getElementById('tagList');
+        const tagItems = document.querySelectorAll('#tagList .tag-item');
+
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            tagList.style.display = query.length > 0 ? 'block' : 'none';
+
+            tagItems.forEach(function (label) {
+                const tagText = label.textContent.toLowerCase();
+                label.style.display = tagText.includes(query) ? 'block' : 'none';
+            });
+        });
+    </script>
+<script>
+function updateTagList() {
+    const checkboxes = document.querySelectorAll('input[name="tags"]:checked');
+    const names = Array.from(checkboxes).map(cb => cb.parentElement.textContent.trim());
+    document.getElementById("tag-list").innerText = names.length
+        ? `Selected: ${names.join(', ')}`
+        : "Selected: none";
+}
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const categorySelect = document.getElementById('category-select');
+  const tagOptions = document.getElementById('tag-options');
+
+  categorySelect.addEventListener('change', function () {
+    const categoryId = this.value;
+
+    tagOptions.innerHTML = 'Loading tags...';
+
+    fetch(`/get-tags/?category_id=${categoryId}`)
+      .then(response => response.json())
+      .then(data => {
+        tagOptions.innerHTML = '';
+
+        if (data.tags.length === 0) {
+          tagOptions.innerHTML = '<p style="color: #888;">No tags found for this category.</p>';
+        } else {
+          data.tags.forEach(tag => {
+            const label = document.createElement('label');
+            label.style.marginRight = '15px';
+            label.style.display = 'inline-block';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'tags';
+            checkbox.value = tag.id;
+
+            label.appendChild(checkbox);
+            label.append(` ${tag.name}`);
+            tagOptions.appendChild(label);
+          });
+        }
+      });
+  });
+});
+</script>
+
+</body>
+</html>

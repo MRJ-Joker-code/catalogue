@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .verify-container {
+            background-color: white;
+            padding: 30px 40px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            color: #d9534f;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="verify-container">
+    <h2>Verify Your Email</h2>
+    <p>Please enter the verification code sent to your email.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="verification_code" placeholder="Enter code here" required>
+        <button type="submit">Verify</button>
+    </form>
+
+    {% if error %}
+        <p class="message">{{ error }}</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

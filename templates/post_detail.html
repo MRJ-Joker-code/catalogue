@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.user.username }}'s Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            background-color: #f9f9f9;
+        }
+        .post-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .main-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .thumbnail-row {
+            display: flex;
+            gap: 10px;
+        }
+        .thumbnail-row img {
+            flex: 1;
+            max-width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .meta {
+            margin-top: 20px;
+            color: #555;
+        }
+        .image-grid {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.main-image {
+  flex: 2;
+  overflow: hidden;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px
+}
+
+.side-images {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 10px;
+}
+
+.side-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+#floating-menu {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #007BFF;
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  font-family: sans-serif;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #0056b3;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+}
+
+#toggle-btn {
+  background: white;
+  color: #007BFF;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+#menu-content {
+  padding: 10px;
+  background: #007BFF;
+  border-radius: 0 0 10px 10px;
+}
+
+#menu-content button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-content button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <h2>{{ post.user.username }}'s Post</h2>
+        <p>{{ post.caption }}</p>
+
+        <div class="image-grid">
+    {% if post.media_files.all %}
+        <div class="main-image">
+            <img src="{{ post.media_files.first.media.url }}" alt="Main image">
+        </div>
+        <div class="side-images">
+            {% for media in post.media_files.all|slice:"1:5" %}
+                <div class="side-image">
+                    <img src="{{ media.media.url }}" alt="Extra image">
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+
+        <div class="meta">
+            <p><strong>Likes:</strong> {{ post.no_of_likes }}</p>
+            <p><strong>Date Posted:</strong> {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+    </div>
+<div id="floating-menu">
+  <div id="menu-header">
+    <span>Menu</span>
+    <button id="toggle-btn">−</button>
+  </div>
+  <div id="menu-content">
+    <button onclick="window.location.href='/'">Home</button>
+    <button onclick="window.location.href='javascript:history.back()'">Back</button>
+    <button onclick="window.location.href='/help'">Help</button>
+  </div>
+</div>
+
+<script>
+  const menu = document.getElementById('floating-menu');
+  const header = document.getElementById('menu-header');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('menu-content');
+
+  // Toggle visibility
+  toggleBtn.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      toggleBtn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      toggleBtn.textContent = '+';
+    }
+  });
+
+  // Draggable logic
+  let isDragging = false, offsetX, offsetY;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - menu.offsetLeft;
+    offsetY = e.clientY - menu.offsetTop;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      menu.style.left = `${e.clientX - offsetX}px`;
+      menu.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+
+</body>
+</html>

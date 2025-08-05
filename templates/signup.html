@@ -1,0 +1,197 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up | Catalogue</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-title-banner {
+            width: 100%;
+            padding: 30px 288px;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-title h1 {
+            font-size: 64px;
+            font-weight: 900;
+            margin: 0;
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .signup-container {
+            margin-top: 40px;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .signup-container h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #f0f4f8;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .message {
+            color: red;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            position: absolute;
+            bottom: -250px;
+            left: 20px;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: black;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with logo and large title -->
+    <div class="page-title-banner">
+        <div class="logo-title">
+            <img src="{% static 'images/kn.jpg' %}" alt="Logo" class="logo-img"><br>
+            <h1>CATALOGUE</h1>
+        </div>
+    </div>
+
+    <!-- Signup Container -->
+    <div class="signup-container">
+        <h2>Create an Account</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="/signup">
+
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Confirm Password</label>
+                <input type="password" name="password2" id="password2" required>
+            </div>
+
+<label class="custom-checkbox">
+  <input type="checkbox" id="agreeBox" required>
+  I agree to the Terms and Conditions
+</label>
+
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="signin">Sign in</a>
+        </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+        <a href="terms">Terms and Conditions</a>
+        <a href="about">About</a>
+        <a href="question">Frequently Asked Questions</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalogue - Sign In</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            flex-direction: column;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .checkbox-group input {
+            margin-right: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .signup-link {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            position: absolute;
+            bottom: -60px;
+            left: 20px;
+        }
+
+        .footer-links a {
+            color: black;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .page-title-banner {
+            width: 100%;
+            padding: 34px 0;
+            background-color: black;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-title h1 {
+            font-size: 64px;
+            font-weight: 900;
+            margin: 0;
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    </style>
+</head>
+<body>
+  <div class="page-title-banner">
+        <div class="logo-title">
+            <img src="{% static 'images/kn.jpg' %}" alt="Logo" class="logo-img"><br>
+            <h1>CATALOGUE</h1>
+        </div>
+    </div>
+
+
+    <div class="login-container">
+        <h2>Catalogue</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter password" required>
+            </div>
+            <a href="/forgot-password/">Forgot Password</a>
+            <button type="submit" class="submit-btn">Login In</button>
+        </form>
+
+        <div class="signup-link">
+            Don't have an account? <a href="signup">Sign up</a>
+        </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+        <a href="terms">Terms and Conditions</a>
+        <a href="about">About</a>
+        <a href="question">Frequently Asked Questions</a>
+    </div>
+
+</body>
+</html>

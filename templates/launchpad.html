@@ -1,0 +1,457 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🚀 Product Launchpad</title>
+  <style>
+    body {
+      height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364); /* dark blue gradient */
+  color: white;
+  padding: 0;
+
+    .launch-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .launch-header h1 {
+      font-size: 2.8rem;
+      color: #d32f2f;
+      margin-bottom: 10px;
+    }
+
+    .launch-header p {
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+       flex: 1;
+      padding: 40px 20px;
+      margin-bottom: 60px;
+    }
+
+    .launch-card {
+      background: white;
+      width: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .launch-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    }
+
+    .launch-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .launch-card-content {
+      padding: 20px;
+    }
+
+    .launch-card h3 {
+      margin: 0;
+      color: #e53935;
+      font-size: 1.3rem;
+    }
+
+    .launch-card p {
+      margin: 8px 0;
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    .launch-card .launch-meta {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 8px;
+    }
+
+    .launch-card a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 14px;
+      background-color: #ff5722;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .launch-card a:hover {
+      background-color: #e64a19;
+    }
+
+    @media screen and (max-width: 768px) {
+      .card-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .dropdown-header {
+  text-align: center;
+  padding: 30px 10px;
+ background: linear-gradient(to right, #0f2027, #203a43, #2c5364); /* dark blue gradient */
+color: white;
+  position: relative;
+}
+
+.dropdown-title {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 2.7rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: red;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-content a:hover {
+  background-color: #f4f4f4;
+}
+
+.dropdown-header.active .dropdown-content {
+  display: block;
+}
+
+.deal-subtitle {
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+.menu{
+  padding: 0.2px 8px;
+  display: inline;
+  background-color: #fff;
+  border-radius: 4px;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+#floating-menu {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #007BFF;
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  font-family: sans-serif;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #0056b3;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+}
+
+#toggle-btn {
+  background: white;
+  color: #007BFF;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+#menu-content {
+  padding: 10px;
+  background: #007BFF;
+  border-radius: 0 0 10px 10px;
+}
+
+#menu-content button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-content button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+.site-footer {
+  background-color: #f0f0f0;
+  padding: 40px 20px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+  margin-bottom: ;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.footer-logo-grid img {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-grid img:hover {
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 150px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  text-align-last: center;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.brand-link img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+    .page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+<div class="dropdown-header">
+  <button class="dropdown-title">🚀 Product Launches</button>
+  <div class="dropdown-content">
+    <a href="/">Home</a>
+    <a href="launchpad/upload/">Upload Product</a>
+    <a href="#">Help</a>
+  </div>
+  <p class="deal-subtitle">Explore the latest groundbreaking launches!</p>
+</div>
+
+
+  <div class="card-grid">
+    {% for item in launchpads %}
+      <div class="launch-card">
+        <img src="{{ item.product_image.url }}" alt="{{ item.product_name }}">
+        <div class="launch-card-content">
+          <h3>{{ item.product_name }}</h3>
+          <p><strong>{{ item.company_name }}</strong></p>
+          <p>{{ item.product_description|truncatewords:20 }}</p>
+          <div class="launch-meta">
+            📍 {{ item.location_point }}<br>
+            🗓️ {{ item.date }}
+          </div>
+          <a href="{{ item.product_link }}" target="_blank">View Product</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+<div id="floating-menu">
+  <div id="menu-header">
+    <span>Menu</span>
+    <button id="toggle-btn">−</button>
+  </div>
+  <div id="menu-content">
+    <button onclick="window.location.href='/'">Home</button>
+    <button onclick="window.location.href='/launchpad/upload/'">Add Product</button>
+    <button onclick="window.location.href='/help'">Help</button>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <div class="brand-link">
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/kn.jpg' %}" alt="Logo">
+    </a> CATALOGUE </div>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support@example.com</p>
+      <p>Phone:=2347012755862</p>
+      <p>Address:minna niger state</p>
+    </div>
+
+<div class="footer-section">
+  <h4>Follow Us</h4>
+  <div class="footer-logo-grid">
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download (1).png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/vide.jpeg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vv.jpg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/download 3.png' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vvvvv.jpg' %}" alt="Logo">
+    </a>
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/images.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/images (1).png' %}" alt="Logo">
+    </a>
+  </div>
+
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 YourSite. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+  const menu = document.getElementById('floating-menu');
+  const header = document.getElementById('menu-header');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('menu-content');
+
+  // Toggle visibility
+  toggleBtn.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      toggleBtn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      toggleBtn.textContent = '+';
+    }
+  });
+
+  // Draggable logic
+  let isDragging = false, offsetX, offsetY;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - menu.offsetLeft;
+    offsetY = e.clientY - menu.offsetTop;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      menu.style.left = `${e.clientX - offsetX}px`;
+      menu.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+</div>
+</body>
+</html>

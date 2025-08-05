@@ -1,0 +1,435 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Post</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .upload-container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .media-layout {
+      display: flex;
+      gap: 20px;
+    }
+
+    .large-box {
+      flex: 2;
+      aspect-ratio: 4/5;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      background-color: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #666;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .small-box-group {
+      flex: 1.5;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .small-box {
+      aspect-ratio: 1/1;
+      border: 2px dashed #ccc;
+      border-radius: 6px;
+      background-color: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #666;
+      position: relative;
+      overflow: hidden;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-label {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .preview {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    #floating-menu {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #007BFF;
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  font-family: sans-serif;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #0056b3;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+}
+
+#toggle-btn {
+  background: white;
+  color: #007BFF;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+#menu-content {
+  padding: 10px;
+  background: #007BFF;
+  border-radius: 0 0 10px 10px;
+}
+
+#menu-content button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-content button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+.site-footer {
+  background-color: #f0f0f0;
+  padding: 40px 20px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.footer-logo-grid img {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-grid img:hover {
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 150px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  text-align-last: center;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.brand-link img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+  </style>
+</head>
+<body>
+
+  <div class="upload-container">
+    <h2>Create a New Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="media-layout">
+        <!-- Large Upload Box -->
+        <label class="large-box upload-label">
+          <span>Click to upload</span>
+          <input type="file" name="media" accept="image/*,video/*" onchange="previewMedia(this)">
+        </label>
+
+        <!-- 4 Smaller Upload Boxes -->
+        <div class="small-box-group">
+          {% for i in "1234" %}
+          <label class="small-box upload-label">
+            <span>Upload</span>
+            <input type="file" name="media" accept="image/*,video/*" onchange="previewMedia(this)">
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <label for="caption">Caption:</label>
+      <textarea name="caption" placeholder="Write something..."></textarea>
+
+      <button type="submit">Post</button>
+    </form>
+  </div>
+<div id="floating-menu">
+  <div id="menu-header">
+    <span>Menu</span>
+    <button id="toggle-btn">−</button>
+  </div>
+  <div id="menu-content">
+    <button onclick="window.location.href='/'">Home</button>
+    <button onclick="window.location.href='{% url "profile" username=user.username %}'">Profile</button>
+    <button onclick="window.location.href='/help'">Help</button>
+  </div>
+</div>
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <div class="brand-link">
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/kn.jpg' %}" alt="Logo">
+    </a> CATALOGUE </div>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support@example.com</p>
+      <p>Phone:=2347012755862</p>
+      <p>Address:minna niger state</p>
+    </div>
+
+<div class="footer-section">
+  <h4>Follow Us</h4>
+  <div class="footer-logo-grid">
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download (1).png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/vide.jpeg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vv.jpg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/download 3.png' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vvvvv.jpg' %}" alt="Logo">
+    </a>
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/images.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/images (1).png' %}" alt="Logo">
+    </a>
+  </div>
+
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 YourSite. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+  const menu = document.getElementById('floating-menu');
+  const header = document.getElementById('menu-header');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('menu-content');
+
+  // Toggle visibility
+  toggleBtn.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      toggleBtn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      toggleBtn.textContent = '+';
+    }
+  });
+
+  // Draggable logic
+  let isDragging = false, offsetX, offsetY;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - menu.offsetLeft;
+    offsetY = e.clientY - menu.offsetTop;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      menu.style.left = `${e.clientX - offsetX}px`;
+      menu.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+
+  <script>
+    function previewMedia(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const label = input.closest('label');
+
+        // Remove previous preview if it exists
+        const oldPreview = label.querySelector('.preview');
+        if (oldPreview) oldPreview.remove();
+
+        let preview;
+
+        if (file.type.startsWith('image/')) {
+          preview = document.createElement('img');
+          preview.src = URL.createObjectURL(file);
+        } else if (file.type.startsWith('video/')) {
+          preview = document.createElement('video');
+          preview.src = URL.createObjectURL(file);
+          preview.controls = true;
+        }
+
+        preview.className = 'preview';
+        label.appendChild(preview);
+        label.querySelector('span').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

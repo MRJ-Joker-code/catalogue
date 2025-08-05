@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Launchpad Product</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      margin: 0;
+    }
+
+    .upload-wrapper {
+      display: flex;
+      max-width: 1000px;
+      margin: auto;
+      background-color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .image-preview {
+      width: 50%;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .placeholder {
+      font-size: 80px;
+      color: #ccc;
+    }
+
+    .upload-form {
+      width: 50%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .upload-form input,
+    .upload-form textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .upload-form button {
+      padding: 12px;
+      background-color: #ff5722;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .upload-form button:hover {
+      background-color: #e64a19;
+    }
+
+    @media screen and (max-width: 768px) {
+      .upload-wrapper {
+        flex-direction: column;
+      }
+
+      .image-preview, .upload-form {
+        width: 100%;
+      }
+    }
+    #floating-menu {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #007BFF;
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  font-family: sans-serif;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #0056b3;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+}
+
+#toggle-btn {
+  background: white;
+  color: #007BFF;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+#menu-content {
+  padding: 10px;
+  background: #007BFF;
+  border-radius: 0 0 10px 10px;
+}
+
+#menu-content button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-content button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+
+  <form class="upload-wrapper" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Left: Image Preview -->
+    <div class="image-preview">
+      <img id="preview-img" src="{% static 'placeholder.png' %}" alt="Preview" class="placeholder">
+    </div>
+
+    <!-- Right: Form -->
+    <div class="upload-form">
+      <input type="text" name="product_name" placeholder="Product Name" required>
+      <input type="text" name="company_name" placeholder="Company Name" required>
+      <input type="text" name="date" placeholder="Launch Date" required>
+      <input type="text" name="location_point" placeholder="Location" required>
+      <textarea name="product_description" placeholder="Product Description" rows="4" required></textarea>
+      <input type="url" name="product_link" placeholder="Product Link" required>
+      <input type="file" name="product_image" accept="image/*" onchange="previewImage(event)" required>
+      <button type="submit">🚀 Launch Product</button>
+    </div>
+  </form>
+
+<div id="floating-menu">
+  <div id="menu-header">
+    <span>Menu</span>
+    <button id="toggle-btn">−</button>
+  </div>
+  <div id="menu-content">
+    <button onclick="window.location.href='/'">Home</button>
+    <button onclick="window.location.href='/launchpad'">launchpad</button>
+    <button onclick="window.location.href='/help'">Help</button>
+  </div>
+</div>
+<script>
+  const menu = document.getElementById('floating-menu');
+  const header = document.getElementById('menu-header');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('menu-content');
+
+  // Toggle visibility
+  toggleBtn.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      toggleBtn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      toggleBtn.textContent = '+';
+    }
+  });
+
+  // Draggable logic
+  let isDragging = false, offsetX, offsetY;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - menu.offsetLeft;
+    offsetY = e.clientY - menu.offsetTop;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      menu.style.left = `${e.clientX - offsetX}px`;
+      menu.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+
+  <script>
+    function previewImage(event) {
+      const preview = document.getElementById('preview-img');
+      const file = event.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('placeholder');
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Search Results</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fafafa;
+      padding: 40px;
+    }
+    .search-results {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 10px;
+      width: 240px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-3px);
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+      color: #333;
+    }
+    .product-card p {
+      font-size: 14px;
+      color: #666;
+    }
+    .tag {
+      display: inline-block;
+      background: #eee;
+      border-radius: 12px;
+      padding: 4px 8px;
+      margin: 4px 2px 0;
+      font-size: 12px;
+      color: #444;
+    }
+    .site-footer {
+  background-color: #f0f0f0;
+  padding: 40px 20px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.footer-logo-grid img {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-grid img:hover {
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 150px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  text-align-last: center;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.brand-link img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+  </style>
+</head>
+<body>
+
+  <h2>Search Results for "{{ query }}"</h2>
+
+  <div class="search-results">
+    {% for product in products %}
+      <div class="product-card">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h3>{{ product.name }}</h3>
+        <p>₦{{ product.discount_price|default:product.price }}</p>
+        <div>
+          {% for tag in product.tags.all %}
+            <span class="tag">{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    {% empty %}
+      <p>No products found for "{{ query }}"</p>
+    {% endfor %}
+  </div>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <div class="brand-link">
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/kn.jpg' %}" alt="Logo">
+    </a> CATALOGUE </div>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support@example.com</p>
+      <p>Phone:=2347012755862</p>
+      <p>Address:minna niger state</p>
+    </div>
+
+<div class="footer-section">
+  <h4>Follow Us</h4>
+  <div class="footer-logo-grid">
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download (1).png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/vide.jpeg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vv.jpg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/download 3.png' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vvvvv.jpg' %}" alt="Logo">
+    </a>
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/images.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/images (1).png' %}" alt="Logo">
+    </a>
+  </div>
+
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 YourSite. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

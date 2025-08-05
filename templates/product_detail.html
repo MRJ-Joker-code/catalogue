@@ -1,0 +1,527 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ product.name }}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+    }
+
+    nav {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+        nav a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 500;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      border: 3px solid black;
+      border-radius: 10px;
+    }
+
+    .left, .right {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 450px;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .thumbnails {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .thumbnail {
+      width: 80px;
+      height: 80px;
+      border: 2px solid black;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .right h1 {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .price {
+      font-size: 2rem;
+      color: #ff5a00;
+      margin-bottom: 1rem;
+    }
+
+    .price del {
+      color: #999;
+      margin-left: 10px;
+      font-size: 1.2rem;
+    }
+
+    .info {
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .options label {
+      font-weight: bold;
+      margin-top: 1.5rem;
+      display: block;
+      font-size: 1.1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e0e0e0;
+      padding: 6px 12px;
+      border-radius: 4px;
+      margin: 6px 6px 0 0;
+      font-size: 1rem;
+    }
+
+    .quantity-input {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-input input {
+      width: 70px;
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+    }
+.buy-now {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.buy-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.buy-button:hover {
+  background-color: #0056b3;
+}
+
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .right h1 {
+        font-size: 2rem;
+      }
+
+      .price {
+        font-size: 1.6rem;
+      }
+    }
+}
+        .back-button {
+            margin: 20px 40px 0;
+            display: inline-block;
+
+        }
+        .back-button a {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .back-button a:hover {
+            background-color: #0056b3;
+            margin: 10px;
+        }
+  </style>
+
+</head>
+<body>
+
+  <nav>
+    <a href="/market-place">Home</a>
+    <a href="/fashion/">Fashion</a>
+    <a href="/category/electronics/">Electronics</a>
+    <a href="/category/furniture/">Furniture</a>
+    <a href="/category/beauty/">Beauty & Medicine</a>
+    <a href="/category/books/">Books</a>
+    <a href="/category/automotive/">Automotive</a>
+    <a href="/category/sports">Sports & Outdoors</a>
+    </nav>
+
+     <div class="back-button">
+        <a href="javascript:history.back()">← Back</a>
+    </div>
+
+<div class="container">
+  <div class="left">
+    <div class="main-image">
+      <img src="{{ product.image.url }}" alt="Main Product Image">
+    </div>
+    <div class="thumbnails">
+      <div class="thumbnail">
+        <img src="{{ product.image.url }}" alt="Main Thumbnail">
+      </div>
+      {% for img in product.images.all %}
+        <div class="thumbnail">
+          <img src="{{ img.image.url }}" alt="Extra Image">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="right">
+    <h1>{{ product.name }}</h1>
+
+    <div class="price">
+      ₦{{ product.get_display_price }}
+      {% if product.discount_price %}
+        <del>${{ product.price }}</del>
+      {% endif %}
+    </div>
+
+    <div class="info">
+      {{ product.description }}
+    </div>
+
+    <div class="options">
+      <label>Seller:</label>
+      <div class="badge">{{ product.seller }}</div>
+
+      <label>Colors:</label>
+      {% for color in product.colors.all %}
+        <div class="badge">{{ color.name }}</div>
+      {% empty %}
+        <div class="badge">None</div>
+      {% endfor %}
+
+      <label>Sizes:</label>
+      {% for size in product.sizes.all %}
+        <div class="badge">{{ size.label }}</div>
+      {% empty %}
+        <div class="badge">None</div>
+      {% endfor %}
+    </div>
+
+    <div class="quantity-input">
+      <label><strong>Quantity:</strong></label>
+      <input type="number" name="quantity" min="1" max="{{ product.quantity }}" value="1">
+    </div>
+<div class="buy-now">
+  {% if product.link %}
+    <a href="{{ product.link }}" target="_blank" class="buy-button">Buy Now</a>
+  {% else %}
+    <p><em>Buy link not available</em></p>
+  {% endif %}
+</div>
+
+
+  </div>
+
+</div>
+<section class="similar-wrapper">
+    <h2 style="margin-top: 40px;">Similar Products</h2>
+
+    <div class="similar-container">
+        {% for item in similar_products %}
+            <div class="similar-card">
+                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                <div class="info">
+                    <h4>{{ item.name }}</h4>
+                    <p>${{ item.get_display_price }}</p>
+                    <a href="{% url 'product_detail' item.id %}">View Product</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No similar products available.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<style>
+.similar-wrapper {
+    padding: 0 40px 50px;
+  border-top: 10px solid #eee;
+}
+.similar-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+
+}
+
+.similar-card {
+    width: 180px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.similar-card:hover {
+    transform: scale(1.03);
+}
+
+.similar-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+}
+
+.similar-card .info {
+    padding: 10px;
+    text-align: center;
+}
+
+.similar-card .info h4 {
+    margin: 8px 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.similar-card .info p {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.similar-card .info a {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    color: #007bff;
+}
+.similar-card .info a:hover {
+    text-decoration: underline;
+}
+.site-footer {
+  background-color: #f0f0f0;
+  padding: 40px 20px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.footer-logo-grid img {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-grid img:hover {
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 150px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  text-align-last: center;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.brand-link img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+</style>
+
+<div style="margin: 0 auto; padding: 0 40px;">
+  <hr style="margin: 3rem 0; border: 1px solid #ddd;">
+
+  <h2 style="font-size: 1.5rem;">More Products from {{ product.seller }}</h2>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 1rem;">
+    {% for item in related_products %}
+      <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; background: #fff; ">
+        <a href="{% url 'product_detail' item.id %}" style="text-decoration: none; color: inherit;">
+          <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px;">
+          <h3 style="font-size: 1rem; margin: 10px 0;">{{ item.name|truncatechars:30 }}</h3>
+          <p style="color: #ff5a00; font-weight: bold;">${{ item.get_display_price }}</p>
+        </a>
+      </div>
+    {% empty %}
+      <p style="font-size: 1rem;">This seller has no other products.</p>
+    {% endfor %}
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <div class="brand-link">
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/kn.jpg' %}" alt="Logo">
+    </a> CATALOGUE </div>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support@example.com</p>
+      <p>Phone:=2347012755862</p>
+      <p>Address:minna niger state</p>
+    </div>
+
+<div class="footer-section">
+  <h4>Follow Us</h4>
+  <div class="footer-logo-grid">
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download (1).png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/vide.jpeg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vv.jpg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/download 3.png' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vvvvv.jpg' %}" alt="Logo">
+    </a>
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/images.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/images (1).png' %}" alt="Logo">
+    </a>
+  </div>
+
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 YourSite. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

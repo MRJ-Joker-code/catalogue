@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Help & Support</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f8f8f8;
+    }
+
+    .help-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    h3 {
+      color: #555;
+      margin-top: 30px;
+    }
+
+    p, li {
+      color: #444;
+      line-height: 1.6;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .contact-info {
+      background-color: #eef;
+      padding: 15px;
+      margin-top: 30px;
+      border-left: 4px solid #339;
+    }
+  </style>
+</head>
+<body>
+  <div class="help-container">
+    <h1>Help & Support</h1>
+
+    <h3>Frequently Asked Questions</h3>
+    <ul>
+      <li><strong>How do I create an account?</strong><br>Go to the Sign Up page and fill in your details.</li>
+      <li><strong>I forgot my password. What should I do?</strong><br>Click on "Forgot Password" on the login page and follow the instructions.</li>
+      <li><strong>How do I contact support?</strong><br>Use the contact information below or send us a message.</li>
+    </ul>
+
+    <h3>Need More Help?</h3>
+    <div class="contact-info">
+      <p><strong>Email:</strong> support@example.com</p>
+      <p><strong>Phone:</strong> +234 701 275 5862</p>
+      <p><strong>Office Hours:</strong> Mon - Fri, 9:00AM - 5:00PM</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add New Deal</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f3f3f3;
+      padding: 40px;
+    }
+
+    .form-wrapper {
+      display: flex;
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .image-preview-container {
+      width: 300px;
+      padding: 30px;
+      border-right: 1px solid #eee;
+      background-color: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .image-preview-container img {
+      width: 100%;
+      max-height: 1250px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .form-fields {
+      flex: 1;
+      padding: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 25px;
+      background-color: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+    #floating-menu {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #007BFF;
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  font-family: sans-serif;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #0056b3;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+}
+
+#toggle-btn {
+  background: white;
+  color: #007BFF;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+#menu-content {
+  padding: 10px;
+  background: #007BFF;
+  border-radius: 0 0 10px 10px;
+}
+
+#menu-content button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-content button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+
+<h2 style="text-align:center; margin-bottom: 30px;">Add a New Deal</h2>
+
+<form method="POST" enctype="multipart/form-data" class="form-wrapper">
+  {% csrf_token %}
+
+  <!-- 🔍 Left side: image preview -->
+  <div class="image-preview-container">
+   <img id="image-preview" src="{% static 'images/placeholder.png' %}" alt="Preview">
+    <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
+  </div>
+
+  <!-- 📝 Right side: form fields -->
+  <div class="form-fields">
+    <label>Title</label>
+    <input type="text" name="title" required>
+
+    <label>Description</label>
+    <textarea name="description" rows="4"></textarea>
+
+    <label>Original Price</label>
+    <input type="number" step="0.01" name="original_price" required>
+
+    <label>Discount Price</label>
+    <input type="number" step="0.01" name="discount_price" required>
+
+    <label>Quantity</label>
+    <input type="number" name="quantity" value="0">
+
+    <label>Start Time</label>
+    <input type="datetime-local" name="start_time">
+
+    <label>End Time</label>
+    <input type="datetime-local" name="end_time" required>
+
+    <label>Product Link</label>
+    <input type="url" name="link">
+
+    <button type="submit">Submit Deal</button>
+  </div>
+</form>
+<div id="floating-menu">
+  <div id="menu-header">
+    <span>Menu</span>
+    <button id="toggle-btn">−</button>
+  </div>
+  <div id="menu-content">
+    <button onclick="window.location.href='/'">Home</button>
+    <button onclick="window.location.href='/black-friday'">Offers</button>
+    <button onclick="window.location.href='/help">Help</button>
+  </div>
+</div>
+
+<script>
+  const menu = document.getElementById('floating-menu');
+  const header = document.getElementById('menu-header');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('menu-content');
+
+  // Toggle visibility
+  toggleBtn.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      toggleBtn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      toggleBtn.textContent = '+';
+    }
+  });
+
+  // Draggable logic
+  let isDragging = false, offsetX, offsetY;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - menu.offsetLeft;
+    offsetY = e.clientY - menu.offsetTop;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      menu.style.left = `${e.clientX - offsetX}px`;
+      menu.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+
+<!-- 📸 Image Preview Script -->
+<script>
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+      const output = document.getElementById('image-preview');
+      output.src = reader.result;
+    };
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,589 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="{% static 'favicon.png' %}" type="image/png" />
+  <title>Catalogue</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+  <style>
+    body {
+      background: #f3f4f6;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar {
+      background: #111827;
+      color: white;
+      padding: 12px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .post-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .post-card img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    .post-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 9999px;
+      margin-right: 12px;
+
+    }
+
+    .like-comment {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .like-comment a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .upload-btn {
+      background: #3b82f6;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .upload-btn:hover {
+      background: #2563eb;
+    }
+    .post-media-grid {
+  display: grid;
+  grid-template-areas:
+    "main img2 img3"
+    "main img4 img5";
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.post-media-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.grid-main {
+  grid-area: main;
+  height: 100%;
+}
+
+.grid-img2 { grid-area: img2; height: 240px; }
+.grid-img3 { grid-area: img3; height: 240px; }
+.grid-img4 { grid-area: img4; height: 240px; }
+.grid-img5 { grid-area: img5; height: 240px; }
+
+.enlargeable {
+  cursor: zoom-in;
+  transition: transform 0.2s ease-in-out;
+}
+
+.enlargeable.opened {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  max-width: 90%;
+  max-height: 90%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 9999;
+  cursor: zoom-out;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  border-radius: 10px;
+}
+
+.enlargeable.opened::backdrop {
+  background: rgba(0,0,0,0.5);
+}
+.site-footer {
+  background-color: #f0f0f0;
+  padding: 40px 20px 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  margin-top: 10px;
+}
+
+.footer-logo-grid img {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-grid img:hover {
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 150px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  text-align-last: center;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.brand-link img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+#floating-menu {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #007BFF;
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  font-family: sans-serif;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #0056b3;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+}
+
+#toggle-btn {
+  background: white;
+  color: #007BFF;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+#menu-content {
+  padding: 10px;
+  background: #007BFF;
+  border-radius: 0 0 10px 10px;
+}
+
+#menu-content button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  background: white;
+  color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-content button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+.name{
+   font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+}
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'index' %}">🏠 Home</a>
+    <a href="{% url 'launchpad' %}">🚀 Launchpad</a>
+    <a href="/black-friday">🎁 Offers</a>
+    <a href="/notifications">🔔 Notification</a>
+     <a href="/market-place">🛒 marketplace</a>
+  </div>
+  <div class="nav-right flex items-center gap-4">
+    <!-- Search -->
+    <form action="{% url 'search_user' %}" method="get">
+      <input type="text" name="q" placeholder="Search users..." class="px-3 py-1 rounded-md border border-gray-300" required>
+    </form>
+
+    <!-- Upload -->
+    <a href="{% url 'upload' %}" class="upload-btn">+ Upload</a>
+
+    <!-- Profile Dropdown -->
+    <div class="relative">
+      <a href="#">
+        <img src="{{ user_profile.profileimg.url }}" class="w-9 h-9 rounded-full" alt="profile">
+      </a>
+      <div uk-drop="mode: click; offset: 9" class="header_dropdown profile_dropdown border-t bg-white shadow-md rounded-md p-3 mt-2 w-48">
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li><a href="{% url 'settings' %}" class="block hover:text-blue-500">⚙️ Account Settings</a></li>
+          <li><a href="/explore" class="block hover:text-blue-500">🌍 Explore</a></li>
+          <li><a href="/help" class="block hover:text-blue-500">❓ Help</a></li>
+          <li><a href="{% url 'logout' %}" class="block text-red-500 hover:underline">🚪 Log Out</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Feed -->
+<div class="container max-w-2xl mx-auto px-4 py-6">
+
+  {% for post in posts reversed %}
+  <div class="post-card">
+    <div class="post-header">
+      <img src="{{ post.user.profile.profileimg.url }}" alt="user" class="w-9 h-9 rounded-full">
+      <div>
+<div class="name">
+        <a href="{% url 'profile' post.user.username %}" class="font-bold">@{{ post.user.username }}</a><br></div><div class="relative inline-block text-left ml-auto">
+  <button onclick="toggleDropdown(this)" class="p-2 hover:bg-gray-200 rounded-full">
+    ⋮
+  </button>
+  <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-32 bg-white rounded-md shadow-lg border">
+    <form method="POST" action="{% url 'delete_post' post.id %}">
+      {% csrf_token %}
+      <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+        Delete
+      </button>
+    </form>
+    <button onclick="sharePost('{{ post.id }}')" class="block w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">
+      Share
+    </button>
+  </div>
+</div>
+
+        <small class="text-gray-500">{{ post.created_at|timesince }} ago</small>
+      </div>
+    </div>
+
+     <!-- Caption -->
+    <p class="mt-2 text-gray-800 font-semibold">{{ post.caption }}</p>
+<div class="post-media-grid">
+  {% for media in post.media_files.all %}
+    {% if forloop.counter == 1 %}
+      <div class="grid-main">
+        <img src="{{ media.media.url }}" alt="media" class="enlargeable" />
+      </div>
+    {% elif forloop.counter == 2 %}
+      <div class="grid-img2">
+        <img src="{{ media.media.url }}" alt="media" class="enlargeable" />
+      </div>
+    {% elif forloop.counter == 3 %}
+      <div class="grid-img3">
+       <img src="{{ media.media.url }}" alt="media" class="enlargeable" />
+      </div>
+    {% elif forloop.counter == 4 %}
+      <div class="grid-img4">
+        <img src="{{ media.media.url }}" alt="Image {{ forloop.counter }}">
+      </div>
+    {% elif forloop.counter == 5 %}
+      <div class="grid-img5">
+       <img src="{{ media.media.url }}" alt="media" class="enlargeable" />
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+
+
+
+    <!-- Like and Comment Actions -->
+    <div class="like-comment mt-2 flex items-center gap-4">
+      <a href="{% url 'like-post' %}?post_id={{ post.id }}" class="text-red-500">❤️ Like</a>
+      {% if post.no_of_likes == 0 %}
+        <span>No likes yet</span>
+      {% elif post.no_of_likes == 1 %}
+        <span>1 like</span>
+      {% else %}
+        <span>{{ post.no_of_likes }} likes</span>
+      {% endif %}
+    </div>
+
+
+<!-- Show/Hide Comments Toggle Button -->
+<button class="toggle-comments-btn" onclick="toggleComments('{{ post.id }}')">
+  💬 Show Comments
+</button>
+
+<!-- Comments list is hidden initially -->
+<div id="comments-{{ post.id }}" class="comments mt-2 text-sm" style="display: none;">
+  {% for comment in post.comments.all %}
+    <p><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</p>
+  {% empty %}
+    <p class="text-gray-500">No comments yet.</p>
+  {% endfor %}
+</div>
+
+<!-- 🔓 Add Comment form is ALWAYS visible -->
+<form method="POST" class="mt-3 flex gap-2">
+  {% csrf_token %}
+  <input type="hidden" name="post_id" value="{{ post.id }}">
+  <input type="text" name="content" placeholder="Add a comment..." class="flex-1 px-2 py-1 border rounded-md" required>
+  <button type="submit" class="text-blue-600 font-medium">Post</button>
+</form>
+
+  </div>
+
+{% endfor %}
+
+</div>
+<!-- footer.html -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <div class="brand-link">
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/kn.jpg' %}" alt="Logo">
+    </a> CATALOGUE </div>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support@example.com</p>
+      <p>Phone:=2347012755862</p>
+      <p>Address:minna niger state</p>
+    </div>
+
+<div class="footer-section">
+  <h4>Follow Us</h4>
+  <div class="footer-logo-grid">
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/download (1).png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/vide.jpeg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vv.jpg' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/download 3.png' %}" alt="Logo">
+    </a>
+     <a href="{% url 'index' %}">
+      <img src="{% static 'images/vvvvv.jpg' %}" alt="Logo">
+    </a>
+      <a href="{% url 'index' %}">
+      <img src="{% static 'images/images.png' %}" alt="Logo">
+    </a>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'images/images (1).png' %}" alt="Logo">
+    </a>
+  </div>
+
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 YourSite. All rights reserved.</p>
+  </div>
+</footer>
+<div id="floating-menu">
+  <div id="menu-header">
+    <span>Menu</span>
+    <button id="toggle-btn">−</button>
+  </div>
+  <div id="menu-content">
+    <button onclick="window.location.href='{% url 'explore' %}'">Contact & Support</button>
+    <button onclick="window.location.href='/help'">Help</button>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/uikit.js' %}"></script>
+<script>
+  function toggleComments(id) {
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll(".enlargeable");
+
+    images.forEach((img) => {
+      img.addEventListener("click", () => {
+        img.classList.toggle("opened");
+      });
+    });
+  });
+</script>
+<script>
+  function toggleComments(postId) {
+    const box = document.getElementById(`comments-${postId}`);
+    box.style.display = box.style.display === "none" ? "block" : "none";
+  }
+</script>
+<script>
+  const menu = document.getElementById('floating-menu');
+  const header = document.getElementById('menu-header');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('menu-content');
+
+  // Toggle visibility
+  toggleBtn.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      toggleBtn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      toggleBtn.textContent = '+';
+    }
+  });
+
+  // Draggable logic
+  let isDragging = false, offsetX, offsetY;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - menu.offsetLeft;
+    offsetY = e.clientY - menu.offsetTop;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      menu.style.left = `${e.clientX - offsetX}px`;
+      menu.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+</script>
+<script>
+  function toggleDropdown(button) {
+    const menu = button.nextElementSibling;
+    menu.classList.toggle('hidden');
+  }
+
+  function sharePost(postId) {
+    const url = window.location.origin + "/post/" + postId + "/";
+    navigator.clipboard.writeText(url)
+      .then(() => alert("Link copied to clipboard!"))
+      .catch(() => alert("Failed to copy link."));
+  }
+
+  // Optional: Close dropdowns when clicking outside
+  window.addEventListener('click', function (e) {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+      if (!menu.previousElementSibling.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
